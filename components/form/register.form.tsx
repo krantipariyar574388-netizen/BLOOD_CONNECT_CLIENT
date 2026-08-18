@@ -1,36 +1,36 @@
 "use client"
 import { useState } from "react";
 import Input from "../ui/input";
+import { useForm } from 'react-hook-form';
+
+type TRegister = {
+  fullName : string,
+  email : string,
+  password : string,
+  cpassword : string,
+  phone : string
+}
 
 const LoginForm = () => {
 
-const [formData, setFormData] = useState({
+  const { register, handleSubmit} = useForm<TRegister>({
+    defaultValues : {
     fullName : '',
     email : '',
     password : '',
     cpassword : '',
     phone : ''
+    }
   })
 
-  const onChange = (e : React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
-    setFormData((prev: any) => {
-      return {
-        ...prev,
-        [e.target.name] : e.target.value
-      }
-    })
+  const onSubmit = (data: TRegister) => {
+    console.log("form Submitted", data)
   }
-
-  const onSubmit = (e : React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    console.log('Register submitted', formData)
-  }
-
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-5 mt-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 mt-4">
         <Input
-        onChange={onChange}
+        register = {register}
         id="fullName"
         label="Full Name"
         name="fullName"
@@ -39,7 +39,7 @@ const [formData, setFormData] = useState({
       />
 
       <Input
-      onChange={onChange}
+      register = {register}
         id="email"
         label="Email"
         name="email"
@@ -48,7 +48,7 @@ const [formData, setFormData] = useState({
       />
 
       <Input
-      onChange={onChange}
+      register = {register}
         id="password"
         label="Password"
         name="password"
@@ -57,7 +57,7 @@ const [formData, setFormData] = useState({
       />
 
       <Input
-      onChange={onChange}
+      register = {register}
         id="cpassword"
         label="Confirm Password"
         name="cpassword"
@@ -66,7 +66,7 @@ const [formData, setFormData] = useState({
       />
 
       <Input
-      onChange={onChange}
+      register = {register}
         id="phone"
         label="Phone"
         name="phone"

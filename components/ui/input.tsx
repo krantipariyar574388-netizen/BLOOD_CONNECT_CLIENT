@@ -1,4 +1,5 @@
 import React from "react";
+import { UseFormRegister } from "react-hook-form";
 
 interface IProps {
   name: string;
@@ -6,7 +7,7 @@ interface IProps {
   label: string;
   placeholder?: string;
   id: string;
-  onChange : (e : React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => void
+  register : UseFormRegister<any>
 }
 
 const Input = ({
@@ -15,7 +16,7 @@ const Input = ({
   label,
   placeholder = "start typing..",
   type = "text",
-  onChange
+  register
 }: IProps) => {
   return (
     <div className="flex flex-col gap-0.5">
@@ -23,9 +24,8 @@ const Input = ({
         {label}
       </label>
       <input
-      onChange={onChange}
+        {...register(name)}
         id={id}
-        name={name}
         placeholder={placeholder}
         type={type}
         className="border border-gray-300 px-2 py-3 rounded-md focus : outline-sky-500 "
