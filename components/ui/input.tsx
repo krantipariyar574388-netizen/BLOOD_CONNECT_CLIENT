@@ -6,6 +6,7 @@ interface IProps {
   label: string;
   placeholder?: string;
   id: string;
+  onChange : (e : React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => void
 }
 
 const Input = ({
@@ -14,6 +15,7 @@ const Input = ({
   label,
   placeholder = "start typing..",
   type = "text",
+  onChange
 }: IProps) => {
   return (
     <div className="flex flex-col gap-0.5">
@@ -21,6 +23,7 @@ const Input = ({
         {label}
       </label>
       <input
+      onChange={onChange}
         id={id}
         name={name}
         placeholder={placeholder}

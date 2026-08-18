@@ -1,9 +1,33 @@
+"use client"
+import { useState } from "react";
 import Input from "../ui/input";
 
 const LoginForm = () => {
+  
+  const [formData, setFormData] = useState ({
+    email : '',
+    password : ''
+  })
+
+  const onChange = (e : React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
+    setFormData((prev: any) => {
+      return {
+        ...prev,
+        [e.target.name] : e.target.value
+      }
+    })
+  }
+
+  const onSubmit = (e : React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    console.log('form submitted', formData)
+  }
+
+
   return (
-    <form className="flex flex-col gap-5 mt-4">
+    <form onSubmit={onSubmit} className="flex flex-col gap-5 mt-4">
       <Input
+      onChange={onChange}
         id="email"
         label="Email"
         name="email"
@@ -12,6 +36,7 @@ const LoginForm = () => {
       />
 
       <Input
+      onChange={onChange}
         id="password"
         label="Password"
         name="password"

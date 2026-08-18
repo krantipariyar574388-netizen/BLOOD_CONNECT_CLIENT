@@ -13,7 +13,7 @@ const RegisterPage = () => {
       <section className="border border-gray-300 px-5 py-6 rounded-lg min-w-80">
         <div>
           <h1 className="text-xl font-semibold text-center text-sky-600">
-            Register
+            Create Account
           </h1>
         </div>
 
