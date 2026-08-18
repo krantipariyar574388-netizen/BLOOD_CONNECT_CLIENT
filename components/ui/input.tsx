@@ -1,23 +1,23 @@
 import React from "react";
-import { UseFormRegister } from "react-hook-form";
+import { UseFormRegister, Path, FieldValues } from "react-hook-form";
 
-interface IProps {
-  name: string;
+interface IProps <T extends FieldValues>{
+  name: Path<T>;
   type?: "text" | "password" | "email";
   label: string;
   placeholder?: string;
   id: string;
-  register : UseFormRegister<any>
+  register : UseFormRegister<T>
 }
 
-const Input = ({
+function Input<T extends FieldValues>({
   name,
   id,
   label,
   placeholder = "start typing..",
   type = "text",
   register
-}: IProps) => {
+}: IProps<T>) {
   return (
     <div className="flex flex-col gap-0.5">
       <label className="text-sm front-semibold text-grap-600" htmlFor="email">
