@@ -2,14 +2,19 @@
 import { useState } from "react";
 import Input from "../ui/input";
 import { useForm } from 'react-hook-form';
+import * as yup from "yup";
 
 type TLogin = {
   email : string,
   password : string
 }
 
-const LoginForm = () => {
+const loginSchema = yup.object({
+    email:yup.string().email().required(),
+    password:yup.string().required()
+})
 
+const LoginForm = () => {
   const { register, watch, handleSubmit} = useForm<TLogin>({
     defaultValues : {
       email : '',
