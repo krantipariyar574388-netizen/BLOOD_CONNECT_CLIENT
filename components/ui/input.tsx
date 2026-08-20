@@ -8,6 +8,7 @@ interface IProps <T extends FieldValues>{
   placeholder?: string;
   id: string;
   register : UseFormRegister<T>
+  error?: string
 }
 
 function Input<T extends FieldValues>({
@@ -16,11 +17,12 @@ function Input<T extends FieldValues>({
   label,
   placeholder = "start typing..",
   type = "text",
-  register
+  register,
+  error
 }: IProps<T>) {
   return (
     <div className="flex flex-col gap-0.5">
-      <label className="text-sm front-semibold text-grap-600" htmlFor="email">
+      <label className="text-sm font-semibold text-grap-600" htmlFor={id}>
         {label}
       </label>
       <input
@@ -28,8 +30,13 @@ function Input<T extends FieldValues>({
         id={id}
         placeholder={placeholder}
         type={type}
-        className="border border-gray-300 px-2 py-3 rounded-md focus : outline-sky-500 "
-      />
+        className={`border px-2 py-3 rounded-md  ${error ?
+          "border-red-500 focus:outline-red-500 focus:border-red-500"
+          :
+          'border-gray-300 focus : outline-red-500 foucus:border-sky-500'}
+        `}
+        />
+      <small className="text-red-500 h-3 -mt-0.5 ml-0.5">{error}</small>
     </div>
   );
 };

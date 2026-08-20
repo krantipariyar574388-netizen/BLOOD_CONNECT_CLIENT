@@ -2,24 +2,17 @@
 import { useState } from "react";
 import Input from "../ui/input";
 import { useForm } from 'react-hook-form';
-import * as yup from "yup";
-
-type TLogin = {
-  email : string,
-  password : string
-}
-
-const loginSchema = yup.object({
-    email:yup.string().email().required(),
-    password:yup.string().required()
-})
+import { yupResolver } from "@hookform/resolvers/yup";
+import { loginSchema } from "@/schema/auth.schema";
+import { TLogin } from "@/types/auth.types";
 
 const LoginForm = () => {
-  const { register, watch, handleSubmit} = useForm<TLogin>({
+  const { register, handleSubmit, formState : {errors}} = useForm<TLogin>({
     defaultValues : {
       email : '',
       password : '',
-    }
+    },
+    resolver: yupResolver(loginSchema)
   })
 
   const onSubmit = (data: TLogin) => {
@@ -35,15 +28,18 @@ const LoginForm = () => {
         label="Email"
         name="email"
         placeholder="Enter email or phone number"
-        type={"email"}
+        type='text'
+        error={errors?.email?.message}
       />
 
       <Input
-        register = {register}        id="password"
+        register = {register}
+        id="password"
         label="Password"
         name="password"
         placeholder="Enter your password"
         type={"password"}
+        error={errors?.password?.message}
       />
 
       <div className="mt-5">

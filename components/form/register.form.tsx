@@ -3,33 +3,21 @@ import { useState } from "react";
 import Input from "../ui/input";
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
-
-type TRegister = {
-  fullName : string,
-  email : string,
-  password : string,
-  cpassword : string,
-  phone : string
-}
-
-const registerSchema = yup.object({
-    fullName:yup.string().required(),
-    email:yup.string().email().required(),
-    password:yup.string().required(),
-    cpassword:yup.string().required(),
-    phone:yup.string().required()
-})
+import { yupResolver } from "@hookform/resolvers/yup";
+import { registerSchema } from "@/schema/auth.schema";
+import { TRegister } from "@/types/auth.types";
 
 const LoginForm = () => {
 
-  const { register, handleSubmit} = useForm<TRegister>({
+  const { register, handleSubmit,formState : {errors}} = useForm<TRegister>({
     defaultValues : {
     fullName : '',
     email : '',
     password : '',
     cpassword : '',
     phone : ''
-    }
+    },
+    resolver: yupResolver(registerSchema)
   })
 
   const onSubmit = (data: TRegister) => {
