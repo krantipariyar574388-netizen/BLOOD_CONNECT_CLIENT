@@ -8,7 +8,7 @@ import { TRegister } from "@/types/auth.types";
 
 const LoginForm = () => {
 
-  const { register, handleSubmit,formState : {errors}} = useForm<TRegister>({
+  const { register: formRegister, handleSubmit,formState : {errors}} = useForm<TRegister>({
     defaultValues : {
     fullName : '',
     email : '',
@@ -19,14 +19,18 @@ const LoginForm = () => {
     resolver: yupResolver(registerSchema)
   })
 
-  const onSubmit = (data: TRegister) => {
-    console.log("form Submitted", data)
-  }
+  const onSubmit = async (data: TRegister) => {
+      try {
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 mt-4">
         <Input
-        register = {register}
+        register = {formRegister}
         id="fullName"
         label="Full Name"
         name="fullName"
@@ -36,7 +40,7 @@ const LoginForm = () => {
       />
 
       <Input
-      register = {register}
+      register = {formRegister}
         id="email"
         label="Email"
         name="email"
@@ -46,7 +50,7 @@ const LoginForm = () => {
       />
 
       <Input
-      register = {register}
+      register = {formRegister}
         id="password"
         label="Password"
         name="password"
@@ -56,7 +60,7 @@ const LoginForm = () => {
       />
 
       <Input
-      register = {register}
+      register = {formRegister}
         id="cpassword"
         label="Confirm Password"
         name="cpassword"
@@ -66,7 +70,7 @@ const LoginForm = () => {
       />
 
       <Input
-      register = {register}
+      register = {formRegister}
         id="phone"
         label="Phone"
         name="phone"

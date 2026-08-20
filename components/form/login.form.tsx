@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "@/schema/auth.schema";
 import { TLogin } from "@/types/auth.types";
+import { login } from "@/api/auth.api";
 
 const LoginForm = () => {
   const { register, handleSubmit, formState : {errors}} = useForm<TLogin>({
@@ -15,8 +16,13 @@ const LoginForm = () => {
     resolver: yupResolver(loginSchema)
   })
 
-  const onSubmit = (data: TLogin) => {
-    console.log("form Submitted", data)
+  const onSubmit = async (data: TLogin) => {
+    try {
+      const response = await login(data)
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
 

@@ -29,4 +29,4 @@ export const register = async (data : TRegister) => {
         console.log(error);
         throw error?.response.data;
     }
-};
+}
