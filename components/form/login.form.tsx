@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "@/schema/auth.schema";
 import { TLogin } from "@/types/auth.types";
 import { login } from "@/api/auth.api";
+import {useMutation} from'@tanstack/react-query';
 
 const LoginForm = () => {
   const { register, handleSubmit, formState : {errors}} = useForm<TLogin>({
@@ -16,13 +17,18 @@ const LoginForm = () => {
     resolver: yupResolver(loginSchema)
   })
 
-  const onSubmit = async (data: TLogin) => {
-    try {
-      const response = await login(data)
-      console.log(response)
-    } catch (error) {
-      console.log(error)
+  const {mutate, data, isPending, error} = useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
+      console.log('Login success', data)
+    },
+    onError : (error) => {
+      console.log("Login on error", error)
     }
+  })
+
+  const onSubmit = async (data: TLogin) => {
+    mutate(data)
   }
 
 

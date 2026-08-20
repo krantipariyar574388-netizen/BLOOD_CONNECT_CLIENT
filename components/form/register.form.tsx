@@ -5,8 +5,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "@/schema/auth.schema";
 import { TRegister } from "@/types/auth.types";
+import {useMutation} from'@tanstack/react-query';
+import { register as registerUser } from "@/api/auth.api";
 
-const LoginForm = () => {
+const RegisterForm = () => {
 
   const { register: formRegister, handleSubmit,formState : {errors}} = useForm<TRegister>({
     defaultValues : {
@@ -19,12 +21,18 @@ const LoginForm = () => {
     resolver: yupResolver(registerSchema)
   })
 
-  const onSubmit = async (data: TRegister) => {
-      try {
-        console.log(data)
-      } catch (error) {
-        console.log(error)
+    const {mutate, data, isPending, error} = useMutation({
+      mutationFn: (data: TRegister) => registerUser(data),
+      onSuccess: (data) => {
+        console.log('Register success', data)
+      },
+      onError : (error) => {
+        console.log("Register on error", error)
       }
+    })
+  
+    const onSubmit = async (data: TRegister) => {
+      mutate(data)
     }
 
   return (
@@ -88,4 +96,6 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
+
+
