@@ -33,7 +33,7 @@ function Input<T extends FieldValues>({
         className={`border px-2 py-3 rounded-md  ${error ?
           "border-red-500 focus:outline-red-500 focus:border-red-500"
           :
-          'border-gray-300 focus : outline-red-500 foucus:border-sky-500'}
+          'border-gray-300 focus:outline-sky-500 focus:border-sky-500'}
         `}
         />
       <small className="text-red-500 h-3 -mt-0.5 ml-0.5">{error}</small>

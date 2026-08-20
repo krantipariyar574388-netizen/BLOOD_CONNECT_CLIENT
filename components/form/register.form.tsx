@@ -2,7 +2,6 @@
 import { useState } from "react";
 import Input from "../ui/input";
 import { useForm } from 'react-hook-form';
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "@/schema/auth.schema";
 import { TRegister } from "@/types/auth.types";
@@ -33,6 +32,7 @@ const LoginForm = () => {
         name="fullName"
         placeholder="Enter your full name"
         type={"text"}
+        error={errors?.fullName?.message}
       />
 
       <Input
@@ -42,6 +42,7 @@ const LoginForm = () => {
         name="email"
         placeholder="Enter email or phone number"
         type={"email"}
+        error={errors?.email?.message}
       />
 
       <Input
@@ -51,6 +52,7 @@ const LoginForm = () => {
         name="password"
         placeholder="Enter your password"
         type={"password"}
+        error={errors?.password?.message}
       />
 
       <Input
@@ -60,6 +62,7 @@ const LoginForm = () => {
         name="cpassword"
         placeholder="Enter your confirm password"
         type={"password"}
+        error={errors?.cpassword?.message}
       />
 
       <Input
@@ -69,6 +72,7 @@ const LoginForm = () => {
         name="phone"
         placeholder="Enter phone number"
         type={"text"}
+        error={errors?.phone?.message}
       />
 
       <div className="mt-5">
