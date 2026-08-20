@@ -7,6 +7,7 @@ import { registerSchema } from "@/schema/auth.schema";
 import { TRegister } from "@/types/auth.types";
 import {useMutation} from'@tanstack/react-query';
 import { register as registerUser } from "@/api/auth.api";
+import toast from "react-hot-toast";
 
 const RegisterForm = () => {
 
@@ -25,9 +26,11 @@ const RegisterForm = () => {
       mutationFn: (data: TRegister) => registerUser(data),
       onSuccess: (data) => {
         console.log('Register success', data)
+        toast.success(data.message ?? "Register success")
       },
       onError : (error) => {
         console.log("Register on error", error)
+        toast.error(error?.message ?? "Register success")
       }
     })
   

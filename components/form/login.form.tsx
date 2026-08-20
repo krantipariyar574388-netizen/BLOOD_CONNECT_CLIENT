@@ -7,6 +7,7 @@ import { loginSchema } from "@/schema/auth.schema";
 import { TLogin } from "@/types/auth.types";
 import { login } from "@/api/auth.api";
 import {useMutation} from'@tanstack/react-query';
+import toast from "react-hot-toast";
 
 const LoginForm = () => {
   const { register, handleSubmit, formState : {errors}} = useForm<TLogin>({
@@ -21,9 +22,11 @@ const LoginForm = () => {
     mutationFn: login,
     onSuccess: (data) => {
       console.log('Login success', data)
+      toast.success(data.message ?? "Login success")
     },
     onError : (error) => {
       console.log("Login on error", error)
+      toast.error(error?.message ?? "Login failed")
     }
   })
 
