@@ -74,7 +74,7 @@ const BloodRequestForm = () => {
         label="Units Needed"
         name="units"
         placeholder="e.g. 2"
-        type="number"
+        type="text"
         error={errors?.units?.message}
       />
 
@@ -113,7 +113,7 @@ const BloodRequestForm = () => {
         id="requiredDate"
         label="Required Date"
         name="requiredDate"
-        type="date"
+        type="text"
         error={errors?.requiredDate?.message}
       />
 

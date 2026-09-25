@@ -7,6 +7,7 @@ export const login = async (data : TLogin) => {
         const response = await axios.post(
             "http://localhost:8003/users/login",
             data,
+            { withCredentials: true }
         );
         console.log(response.data);
         return response.data;
