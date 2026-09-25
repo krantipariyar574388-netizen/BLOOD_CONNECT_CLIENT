@@ -1,3 +1,5 @@
+import { BLOOD_GROUP_OPTIONS } from "@/constants/bloodGroup";
+import { ROLE_OPTIONS } from "@/constants/role";
 import * as yup from "yup";
 
 // Login schema
@@ -40,4 +42,19 @@ export const registerSchema = yup.object({
       }
     })
     .required("Phone number is required."),
+  bloodGroup: yup
+    .string()
+    .oneOf(
+      BLOOD_GROUP_OPTIONS.map((o) => o.value),
+      "Invalid blood group",
+    )
+    .required("Blood group is required."),
+  district: yup.string().required("District is required."),
+  role: yup
+  .string()
+  .oneOf(
+    ROLE_OPTIONS.map((o) => o.value),
+    "Invalid role"
+  )
+  .required("Please select your role."),
 });

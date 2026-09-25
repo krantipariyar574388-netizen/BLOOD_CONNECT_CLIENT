@@ -12,7 +12,7 @@ export const login = async (data : TLogin) => {
         return response.data;
     } catch (error : any) {
         console.log(error);
-        throw error?.response.data;
+        throw error?.response?.data ?? { message: error?.message ?? "Network error. Is the server running?" };
     }
 };
 
@@ -27,6 +27,6 @@ export const register = async (data : TRegister) => {
         return response.data;
     } catch (error : any) {
         console.log(error);
-        throw error?.response.data;
+        throw error?.response?.data ?? { message: error?.message ?? "Network error. Is the server running?" };
     }
 }

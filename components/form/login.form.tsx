@@ -8,8 +8,10 @@ import { TLogin } from "@/types/auth.types";
 import { login } from "@/api/auth.api";
 import {useMutation} from'@tanstack/react-query';
 import toast from "react-hot-toast";
+import { useRouter }from 'next/navigation'
 
 const LoginForm = () => {
+  const router = useRouter()
   const { register, handleSubmit, formState : {errors}} = useForm<TLogin>({
     defaultValues : {
       email : '',
@@ -23,6 +25,7 @@ const LoginForm = () => {
     onSuccess: (data) => {
       console.log('Login success', data)
       toast.success(data.message ?? "Login success")
+      router.replace('/')
     },
     onError : (error) => {
       console.log("Login on error", error)
