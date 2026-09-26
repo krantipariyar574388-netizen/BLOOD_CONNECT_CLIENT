@@ -6,11 +6,12 @@ import { useEffect } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { Droplet, Plus, Clock, LogOut } from "lucide-react";
-
 import { useAuth } from "@/hooks/useAuth";
 import { getMyRequests, cancelBloodRequest } from "@/api/bloodRequest.api";
 import { logout } from "@/api/user.api";
 import { TBloodRequestItem } from "@/types/bloodRequestList.types";
+import { useState } from "react";
+import ConfirmDialog from "@/components/ui/confirm-dialog";
 
 const statusStyles: Record<string, string> = {
   Pending: "bg-amber-50 text-amber-700 border-amber-200",
@@ -23,7 +24,11 @@ export default function RequesterDashboard() {
   const queryClient = useQueryClient();
   const { user, isLoading: authLoading, isAuthenticated } = useAuth();
 
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
   useEffect(() => {
+    if (isLoggingOut) return;
     if (!authLoading && !isAuthenticated) {
       router.replace("/login");
     } else if (user && user.role === "donor") {
@@ -52,7 +57,7 @@ export default function RequesterDashboard() {
     mutationFn: logout,
     onSuccess: () => {
       queryClient.clear();
-      router.replace("/login");
+      router.replace("/");
     },
   });
 
@@ -70,7 +75,7 @@ export default function RequesterDashboard() {
           BloodConnect
         </div>
         <button
-          onClick={() => logoutMutation.mutate()}
+          onClick={() => setShowLogoutDialog(true)}
           className="flex items-center gap-1.5 text-sm text-[#6b5f58] hover:text-[#211A17]"
         >
           <LogOut size={16} /> Logout
@@ -136,6 +141,18 @@ export default function RequesterDashboard() {
           </div>
         )}
       </div>
+      <ConfirmDialog
+        open={showLogoutDialog}
+        title="Log out?"
+        message="Are you sure you want to log out of your account?"
+        onConfirm={() => {
+            setIsLoggingOut(true);
+          logoutMutation.mutate();
+          setShowLogoutDialog(false);
+        }}
+        onCancel={() => setShowLogoutDialog(false)}
+        isLoading={logoutMutation.isPending}
+      />
     </div>
   );
 }
