@@ -25,7 +25,15 @@ const LoginForm = () => {
     onSuccess: (data) => {
       console.log('Login success', data)
       toast.success(data.message ?? "Login success")
-      router.replace('/')
+      const role = data?.data?.user?.role;
+
+      if (role === "donor") {
+        router.replace('/dashboard/donor');
+      } else if (role === "requester") {
+        router.replace('/dashboard/requester');
+      } else {
+        router.replace('/');
+      }
     },
     onError : (error) => {
       console.log("Login on error", error)

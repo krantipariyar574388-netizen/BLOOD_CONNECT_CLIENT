@@ -36,3 +36,52 @@ export const createBloodRequest = async (data: TCreateBloodRequest) => {
     );
   }
 };
+
+export const getAllBloodRequests = async (params?: {
+  bloodGroup?: string;
+  district?: string;
+}) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/bloodrequests`, { params });
+    return response.data;
+  } catch (error: any) {
+    throw error?.response?.data ?? { message: error?.message ?? "Network error" };
+  }
+};
+
+export const getMyRequests = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/bloodrequests/my`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error: any) {
+    throw error?.response?.data ?? { message: error?.message ?? "Network error" };
+  }
+};
+
+export const fulfillBloodRequest = async (id: string) => {
+  try {
+    const response = await axios.patch(
+      `${BASE_URL}/bloodrequests/${id}/fulfill`,
+      {},
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error?.response?.data ?? { message: error?.message ?? "Network error" };
+  }
+};
+
+export const cancelBloodRequest = async (id: string) => {
+  try {
+    const response = await axios.patch(
+      `${BASE_URL}/bloodrequests/${id}/cancel`,
+      {},
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error?.response?.data ?? { message: error?.message ?? "Network error" };
+  }
+};
