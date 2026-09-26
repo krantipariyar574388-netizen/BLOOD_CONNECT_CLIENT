@@ -3,7 +3,7 @@ import { UseFormRegister, Path, FieldValues } from "react-hook-form";
 
 interface IProps <T extends FieldValues>{
   name: Path<T>;
-  type?: "text" | "password" | "email";
+  type: "text" | "password" | "email" | "number" | "date";
   label: string;
   placeholder?: string;
   id: string;

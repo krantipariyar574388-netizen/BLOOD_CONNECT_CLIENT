@@ -92,7 +92,7 @@ export default function RequesterDashboard() {
           </div>
 
           <Link
-            href="/requests/new"
+            href="/requests"
             className="flex items-center gap-1.5 bg-[#A8201A] hover:bg-[#7A1712] text-white font-semibold text-sm px-5 py-3 rounded-lg"
           >
             <Plus size={16} /> New request

@@ -4,11 +4,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from '@tanstack/react-query';
 import toast from "react-hot-toast";
 import { useRouter } from 'next/navigation';
-
 import Input from "../ui/input";
 import Select from "../ui/select";
 import FileInput from "../ui/file-input";
-
 import { bloodRequestSchema } from "@/schema/bloodRequest.schema";
 import { TCreateBloodRequest } from "@/types/bloodRequest.types";
 import { BLOOD_GROUP_OPTIONS } from "@/constants/bloodGroup";
@@ -35,7 +33,7 @@ const BloodRequestForm = () => {
     mutationFn: (data: TCreateBloodRequest) => createBloodRequest(data),
     onSuccess: (data) => {
       toast.success(data.message ?? "Blood request created successfully");
-      router.replace('/requests/my-requests');
+      router.replace('/dashboard/requester');
     },
     onError: (error: any) => {
       toast.error(error?.message ?? "Something went wrong. Please try again.");
@@ -74,7 +72,7 @@ const BloodRequestForm = () => {
         label="Units Needed"
         name="units"
         placeholder="e.g. 2"
-        type="text"
+        type="number"
         error={errors?.units?.message}
       />
 
@@ -104,7 +102,7 @@ const BloodRequestForm = () => {
         label="Contact Phone"
         name="phone"
         placeholder="Enter contact phone number"
-        type="text"
+        type="number"
         error={errors?.phone?.message}
       />
 
@@ -113,7 +111,7 @@ const BloodRequestForm = () => {
         id="requiredDate"
         label="Required Date"
         name="requiredDate"
-        type="text"
+        type="date"
         error={errors?.requiredDate?.message}
       />
 
