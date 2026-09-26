@@ -119,6 +119,21 @@ export default function DonorDashboard() {
               You're not currently eligible to donate
             </p>
             <p className="text-sm">{eligibility.reason}</p>
+            <button
+              onClick={() => availabilityMutation.mutate()}
+              disabled={availabilityMutation.isPending}
+              className={`px-5 py-2.5 rounded-lg text-sm font-semibold disabled:opacity-60 ${
+                user.isAvailable
+                  ? "bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200"
+                  : "bg-[#0F6E5C] hover:bg-[#0c5647] text-white"
+              }`}
+            >
+              {availabilityMutation.isPending
+                ? "Updating..."
+                : user.isAvailable
+                ? "Mark as not available"
+                : "Mark as available"}
+            </button>
           </div>
         ) : requestsLoading ? (
           <p className="text-sm text-[#6b5f58]">Loading requests...</p>
