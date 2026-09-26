@@ -85,3 +85,12 @@ export const cancelBloodRequest = async (id: string) => {
     throw error?.response?.data ?? { message: error?.message ?? "Network error" };
   }
 };
+
+export const getBloodRequestById = async (id: string) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/bloodrequests/${id}`);
+    return response.data;
+  } catch (error: any) {
+    throw error?.response?.data ?? { message: error?.message ?? "Network error" };
+  }
+};

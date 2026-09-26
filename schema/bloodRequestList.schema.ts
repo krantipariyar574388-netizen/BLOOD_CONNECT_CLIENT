@@ -20,7 +20,7 @@ export const bloodRequestItemSchema = yup.object({
 
   requester: yup.object({
     _id: yup.string().required(),
-    name: yup.string().optional(),
+    fullName: yup.string().optional(),
     email: yup.string().optional(),
     phone: yup.string().optional(),
   }),

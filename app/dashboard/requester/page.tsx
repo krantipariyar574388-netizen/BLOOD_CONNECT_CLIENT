@@ -50,7 +50,8 @@ export default function RequesterDashboard() {
       toast.success(res.message);
       queryClient.invalidateQueries({ queryKey: ["my-requests"] });
     },
-    onError: (error: any) => toast.error(error?.message ?? "Something went wrong"),
+    onError: (error: any) =>
+      toast.error(error?.message ?? "Something went wrong"),
   });
 
   const logoutMutation = useMutation({
@@ -62,7 +63,11 @@ export default function RequesterDashboard() {
   });
 
   if (authLoading || !user) {
-    return <div className="min-h-screen grid place-items-center text-[#6b5f58]">Loading...</div>;
+    return (
+      <div className="min-h-screen grid place-items-center text-[#6b5f58]">
+        Loading...
+      </div>
+    );
   }
 
   return (
@@ -88,7 +93,9 @@ export default function RequesterDashboard() {
             <h1 className="font-serif text-2xl font-semibold">
               Welcome, {user.fullName.split(" ")[0]}
             </h1>
-            <p className="text-sm text-[#6b5f58] mt-1">Track and manage your blood requests</p>
+            <p className="text-sm text-[#6b5f58] mt-1">
+              Track and manage your blood requests
+            </p>
           </div>
 
           <Link
@@ -112,24 +119,33 @@ export default function RequesterDashboard() {
             {requests.map((r) => (
               <div
                 key={r._id}
-                className="flex flex-wrap items-center gap-4 bg-white rounded-lg px-5 py-4 border border-[#E5D3BC]"
+                onClick={() => router.push(`/requests/${r._id}`)} // 🆕 ADD — card click gare detail page ma jaane
+                className="flex flex-wrap items-center gap-4 bg-white rounded-lg px-5 py-4 border border-[#E5D3BC] cursor-pointer hover:shadow-md transition-shadow" // 🔁 CHANGE — cursor-pointer, hover:shadow-md add
               >
-                <div className="font-serif text-xl font-semibold w-14 shrink-0">{r.bloodGroup}</div>
+                <div className="font-serif text-xl font-semibold w-14 shrink-0">
+                  {r.bloodGroup}
+                </div>
                 <div className="flex-1 min-w-[180px]">
                   <div className="text-[15px] font-bold">{r.patient}</div>
                   <div className="text-[13.5px] text-[#6b5f58] mt-1">
                     {r.hospital}, {r.district}
                   </div>
                   <div className="text-[12px] text-[#8a7d75] flex items-center gap-1 mt-1">
-                    <Clock size={11} /> Required by {new Date(r.requiredDate).toLocaleDateString()}
+                    <Clock size={11} /> Required by{" "}
+                    {new Date(r.requiredDate).toLocaleDateString()}
                   </div>
                 </div>
-                <span className={`text-xs font-bold px-2.5 py-1 rounded-full border ${statusStyles[r.status]}`}>
+                <span
+                  className={`text-xs font-bold px-2.5 py-1 rounded-full border ${statusStyles[r.status]}`}
+                >
                   {r.status}
                 </span>
                 {r.status === "Pending" && (
                   <button
-                    onClick={() => cancelMutation.mutate(r._id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      cancelMutation.mutate(r._id);
+                    }}
                     disabled={cancelMutation.isPending}
                     className="text-sm text-red-600 hover:underline"
                   >
@@ -146,7 +162,7 @@ export default function RequesterDashboard() {
         title="Log out?"
         message="Are you sure you want to log out of your account?"
         onConfirm={() => {
-            setIsLoggingOut(true);
+          setIsLoggingOut(true);
           logoutMutation.mutate();
           setShowLogoutDialog(false);
         }}
