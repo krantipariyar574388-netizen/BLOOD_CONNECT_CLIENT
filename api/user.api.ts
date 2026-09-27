@@ -38,3 +38,15 @@ export const logout = async () => {
     throw error?.response?.data ?? { message: error?.message ?? "Network error" };
   }
 };
+
+export const getEligibleDonors = async (params?: {
+  bloodGroup?: string;
+  district?: string;
+}) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/users/donors`, { params });
+    return response.data;
+  } catch (error: any) {
+    throw error?.response?.data ?? { message: error?.message ?? "Network error" };
+  }
+};
