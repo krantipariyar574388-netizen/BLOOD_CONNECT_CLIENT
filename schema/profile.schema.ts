@@ -13,6 +13,7 @@ export const updateProfileSchema = yup.object({
     })
     .required("Phone number is required."),
   district: yup.string().required("District is required."),
+  profile_image: yup.mixed<FileList>().optional(),
 });
 
 export const changePasswordSchema = yup.object({

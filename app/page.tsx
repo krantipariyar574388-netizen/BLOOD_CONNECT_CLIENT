@@ -17,6 +17,9 @@ import {
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { getLandingStats } from "@/api/stats.api";
+import { getAllBloodRequests } from "@/api/bloodRequest.api";
+import { TBloodRequestItem } from "@/types/bloodRequestList.types";
+import { useRouter } from "next/navigation";
 
 const BLOOD_GROUP_LIST = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -41,30 +44,6 @@ const STEPS = [
     n: "3",
     title: "Connect directly",
     body: "Call, confirm eligibility, and coordinate the donation with the hospital.",
-  },
-];
-
-const REQUESTS = [
-  {
-    type: "O-",
-    hospital: "Grande International Hospital",
-    city: "Kathmandu",
-    urgency: "Critical",
-    time: "2 hrs ago",
-  },
-  {
-    type: "B+",
-    hospital: "Bir Hospital",
-    city: "Kathmandu",
-    urgency: "Urgent",
-    time: "5 hrs ago",
-  },
-  {
-    type: "AB+",
-    hospital: "Manipal Teaching Hospital",
-    city: "Pokhara",
-    urgency: "Stable",
-    time: "1 day ago",
   },
 ];
 
@@ -112,6 +91,34 @@ export default function LandingPage() {
     queryKey: ["landing-stats"],
     queryFn: getLandingStats,
   });
+
+  const router = useRouter();
+
+  const [urgentPage, setUrgentPage] = useState(0);
+  const URGENT_PAGE_SIZE = 3;
+
+  const { data: requestsData } = useQuery({
+    queryKey: ["landing-urgent-requests"],
+    queryFn: () =>
+      getAllBloodRequests({ status: "Pending", urgency: "critical" }),
+  });
+
+  const criticalRequests: TBloodRequestItem[] = (
+    requestsData?.data?.requests ?? []
+  ).filter((r: TBloodRequestItem) => r.urgency === "critical");
+
+  const totalUrgentPages = Math.ceil(
+    criticalRequests.length / URGENT_PAGE_SIZE,
+  );
+
+  const urgentRequests: TBloodRequestItem[] = criticalRequests.slice(
+    urgentPage * URGENT_PAGE_SIZE,
+    urgentPage * URGENT_PAGE_SIZE + URGENT_PAGE_SIZE,
+  );
+
+  const handleNextUrgentPage = () => {
+    setUrgentPage((prev) => (prev + 1) % totalUrgentPages);
+  };
 
   const bloodTypes = BLOOD_GROUP_LIST.map((type) => {
     const found = stats?.bloodGroupCounts?.find((b: any) => b._id === type);
@@ -178,7 +185,7 @@ export default function LandingPage() {
             href="/register"
             className="bg-[#A8201A] hover:bg-[#7A1712] text-white text-[14.5px] font-semibold px-5 py-2.5 rounded-lg"
           >
-            Become a donor
+            Sign up
           </Link>
         </div>
 
@@ -245,19 +252,17 @@ export default function LandingPage() {
 
           <div className="flex items-center gap-2 text-sm text-[#6b5f58]">
             <ShieldCheck size={16} color="#0F6E5C" />
-            2,400+ ID-verified donors across 34 cities
+            {stats
+              ? `${stats.totalDonors}+ ID-verified donors across ${stats.citiesCovered} cities`
+              : "Loading donor network..."}
           </div>
         </div>
 
         <div className="bg-white border border-[#E5D3BC] rounded-2xl p-6">
-          <div className="flex justify-between items-baseline mb-4">
+          <div className="mb-4">
             <h3 className="font-serif text-lg font-semibold">
               Live donor availability
             </h3>
-
-            <span className="text-[13px] text-[#8a7d75] flex items-center gap-1">
-              <MapPin size={13} /> Kathmandu Valley
-            </span>
           </div>
 
           <div className="grid grid-cols-4 gap-2.5">
@@ -355,51 +360,85 @@ export default function LandingPage() {
       <section id="requests" className="bg-[#F3E7D8] px-6 md:px-[6vw] py-20">
         <div className="max-w-[52ch] mb-12">
           <h2 className="font-serif font-semibold text-[26px] md:text-[34px] tracking-tight mb-3">
-            Urgent requests near you
+            Urgent requests right now
           </h2>
-
           <p className="text-[#6b5f58] text-[16px] leading-relaxed">
             These patients need a match right now. A single donation can cover
             more than one request.
           </p>
         </div>
 
-        <div className="flex flex-col gap-3">
-          {REQUESTS.map((r, i) => (
-            <div
-              key={i}
-              className="flex flex-wrap items-center gap-4 bg-white rounded-lg px-5 py-4 border-l-4 border-[#A8201A]"
-            >
-              <div className="font-serif text-[22px] font-semibold w-14 shrink-0">
-                {r.type}
-              </div>
-
-              <div className="flex-1 min-w-[180px]">
-                <div className="text-[15px] font-bold">{r.hospital}</div>
-
-                <div className="text-[13.5px] text-[#6b5f58] flex items-center gap-1 mt-1">
-                  <MapPin size={13} />
-                  {r.city}
-                </div>
-              </div>
-
-              <div className="text-right shrink-0">
-                <span
-                  className={`text-xs font-bold px-2.5 py-1 rounded-full text-white inline-block ${badgeStyles[r.urgency]}`}
+        {criticalRequests.length === 0 ? (
+          <div className="bg-white rounded-lg px-5 py-8 text-center text-[#6b5f58]">
+            No critical requests at the moment.
+          </div>
+        ) : (
+          <>
+            <div className="flex flex-col gap-3">
+              {urgentRequests.map((r) => (
+                <div
+                  key={r._id}
+                  onClick={() => router.push(`/requests/${r._id}`)}
+                  className="flex flex-wrap items-center gap-4 bg-white rounded-lg px-5 py-4 border-l-4 border-[#A8201A] cursor-pointer hover:shadow-md transition-shadow" // 🔁 CHANGE — cursor-pointer, hover:shadow-md थपियो
                 >
-                  {r.urgency}
-                </span>
-
-                <span className="block text-xs text-[#8a7d75] mt-1.5">
-                  <Clock size={11} className="inline -mt-0.5 mr-1" />
-                  {r.time}
-                </span>
-              </div>
+                  <div className="font-serif text-[22px] font-semibold w-14 shrink-0">
+                    {r.bloodGroup}
+                  </div>
+                  <div className="flex-1 min-w-[180px]">
+                    <div className="text-[15px] font-bold">{r.hospital}</div>
+                    <div className="text-[13.5px] text-[#6b5f58] flex items-center gap-1 mt-1">
+                      <MapPin size={13} />
+                      {r.district}
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <span className="text-xs font-bold px-2.5 py-1 rounded-full text-white inline-block capitalize bg-[#A8201A]">
+                      {r.urgency}
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
 
+            {totalUrgentPages > 1 && (
+  <div className="flex justify-between items-center mt-5">
+    <button
+      onClick={() =>
+        setUrgentPage((prev) =>
+          prev === 0 ? totalUrgentPages - 1 : prev - 1,
+        )
+      }
+      className={`flex items-center gap-1.5 text-sm font-semibold ${
+        urgentPage === 0
+          ? "text-[#B8AAA1] cursor-not-allowed"
+          : "text-[#A8201A] hover:underline"
+      }`}
+      disabled={urgentPage === 0}
+    >
+      <ChevronRight size={16} className="rotate-180" />
+      Previous
+    </button>
+
+    <span className="text-sm text-[#6b5f58]">
+      Page {urgentPage + 1} of {totalUrgentPages}
+    </span>
+
+    <button
+      onClick={handleNextUrgentPage}
+      className={`flex items-center gap-1.5 text-sm font-semibold ${
+        urgentPage === totalUrgentPages - 1
+          ? "text-[#B8AAA1] cursor-not-allowed"
+          : "text-[#A8201A] hover:underline"
+      }`}
+      disabled={urgentPage === totalUrgentPages - 1}
+    >
+      Next <ChevronRight size={16} />
+    </button>
+  </div>
+)}
+          </>
+        )}
+      </section>
       <section id="trust" className="px-6 md:px-[6vw] py-20">
         <div className="max-w-[52ch] mb-12">
           <h2 className="font-serif font-semibold text-[26px] md:text-[34px] tracking-tight mb-3">
