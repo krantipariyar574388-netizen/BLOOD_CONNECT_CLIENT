@@ -13,6 +13,7 @@ import { TBloodRequestItem } from "@/types/bloodRequestList.types";
 import { useState } from "react";
 import ConfirmDialog from "@/components/ui/confirm-dialog";
 import NotificationBell from "@/components/notification-bell";
+import { UserCircle } from "lucide-react";
 
 const statusStyles: Record<string, string> = {
   Pending: "bg-amber-50 text-amber-700 border-amber-200",
@@ -82,6 +83,12 @@ export default function RequesterDashboard() {
         </div>
         <div className="flex items-center gap-4">
           <NotificationBell />
+          <Link
+            href="/profile"
+            className="flex items-center gap-1.5 text-sm text-[#6b5f58] hover:text-[#211A17]"
+          >
+            <UserCircle size={18} />
+          </Link>
           <button
             onClick={() => setShowLogoutDialog(true)}
             className="flex items-center gap-1.5 text-sm text-[#6b5f58] hover:text-[#211A17]"

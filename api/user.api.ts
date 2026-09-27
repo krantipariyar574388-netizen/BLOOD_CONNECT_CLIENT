@@ -50,3 +50,44 @@ export const getEligibleDonors = async (params?: {
     throw error?.response?.data ?? { message: error?.message ?? "Network error" };
   }
 };
+
+export const updateProfile = async (data: {
+  fullName: string;
+  phone: string;
+  district: string;
+  profile_image?: FileList;
+}) => {
+  try {
+    const formData = new FormData();
+    formData.append("fullName", data.fullName);
+    formData.append("phone", data.phone);
+    formData.append("district", data.district);
+    if (data.profile_image && data.profile_image.length > 0) {
+      formData.append("profile_image", data.profile_image[0]);
+    }
+
+    const response = await axios.patch(`${BASE_URL}/users/profile`, formData, {
+      withCredentials: true,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw error?.response?.data ?? { message: error?.message ?? "Network error" };
+  }
+};
+
+export const changePassword = async (data: {
+  oldPassword: string;
+  newPassword: string;
+}) => {
+  try {
+    const response = await axios.patch(
+      `${BASE_URL}/users/change-password`,
+      data,
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error?.response?.data ?? { message: error?.message ?? "Network error" };
+  }
+};

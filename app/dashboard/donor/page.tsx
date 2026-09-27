@@ -14,6 +14,8 @@ import { toggleAvailability, logout } from "@/api/user.api";
 import { TBloodRequestItem } from "@/types/bloodRequestList.types";
 import ConfirmDialog from "@/components/ui/confirm-dialog";
 import NotificationBell from "@/components/notification-bell";
+import Link from "next/link";
+import { UserCircle } from "lucide-react";
 
 export default function DonorDashboard() {
   const router = useRouter();
@@ -119,6 +121,12 @@ export default function DonorDashboard() {
         </div>
         <div className="flex items-center gap-4">
           <NotificationBell />
+          <Link
+            href="/profile"
+            className="flex items-center gap-1.5 text-sm text-[#6b5f58] hover:text-[#211A17]"
+          >
+            <UserCircle size={18} />
+          </Link>
           <button
             onClick={() => setShowLogoutDialog(true)}
             className="flex items-center gap-1.5 text-sm text-[#6b5f58] hover:text-[#211A17]"
