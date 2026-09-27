@@ -13,6 +13,7 @@ import {
 import { toggleAvailability, logout } from "@/api/user.api";
 import { TBloodRequestItem } from "@/types/bloodRequestList.types";
 import ConfirmDialog from "@/components/ui/confirm-dialog";
+import NotificationBell from "@/components/notification-bell";
 
 export default function DonorDashboard() {
   const router = useRouter();
@@ -60,7 +61,8 @@ export default function DonorDashboard() {
       queryClient.invalidateQueries({ queryKey: ["nearby-requests"] });
       queryClient.invalidateQueries({ queryKey: ["me"] });
     },
-    onError: (error: any) => toast.error(error?.message ?? "Something went wrong"),
+    onError: (error: any) =>
+      toast.error(error?.message ?? "Something went wrong"),
   });
 
   const logoutMutation = useMutation({
@@ -115,12 +117,15 @@ export default function DonorDashboard() {
           </span>
           BloodConnect
         </div>
-        <button
-          onClick={() => setShowLogoutDialog(true)}
-          className="flex items-center gap-1.5 text-sm text-[#6b5f58] hover:text-[#211A17]"
-        >
-          <LogOut size={16} /> Logout
-        </button>
+        <div className="flex items-center gap-4">
+          <NotificationBell />
+          <button
+            onClick={() => setShowLogoutDialog(true)}
+            className="flex items-center gap-1.5 text-sm text-[#6b5f58] hover:text-[#211A17]"
+          >
+            <LogOut size={16} /> Logout
+          </button>
+        </div>
       </div>
 
       <div className="px-6 md:px-[6vw] py-10">
