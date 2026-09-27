@@ -40,6 +40,8 @@ export const createBloodRequest = async (data: TCreateBloodRequest) => {
 export const getAllBloodRequests = async (params?: {
   bloodGroup?: string;
   district?: string;
+  status?: string;
+  urgency?: string;
 }) => {
   try {
     const response = await axios.get(`${BASE_URL}/bloodrequests`, { params });
