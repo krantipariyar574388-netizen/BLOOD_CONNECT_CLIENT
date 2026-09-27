@@ -166,6 +166,10 @@ export default function LandingPage() {
             Why trust us
           </a>
 
+          <Link href="/donors" className="opacity-75 hover:opacity-100">
+            Find Donors
+          </Link>
+
           <Link href="/login" className="opacity-75 hover:opacity-100">
             Log in
           </Link>
@@ -188,6 +192,10 @@ export default function LandingPage() {
           <a href="#how">How it works</a>
           <a href="#requests">Urgent requests</a>
           <a href="#trust">Why trust us</a>
+
+          <Link href="/donors" className="text-sm font-semibold">
+            Find Donors
+          </Link>
 
           <Link href="/login" className="text-sm font-semibold">
             Log in
@@ -264,9 +272,7 @@ export default function LandingPage() {
                   className={`w-1.5 h-1.5 rounded-full inline-block mb-1.5 ${dotStyles[b.status]}`}
                 />
 
-                <div className="font-serif text-xl font-semibold">
-                  {b.type}
-                </div>
+                <div className="font-serif text-xl font-semibold">{b.type}</div>
 
                 <div className="text-[12.5px] text-[#5c5049] mt-0.5">
                   {activeType === b.type
@@ -306,17 +312,13 @@ export default function LandingPage() {
             key={s.label}
             className={`text-center py-8 px-4 ${
               i !== 0 ? "border-l border-[#E5D3BC]" : ""
-            } ${
-              i < 2 ? "border-b md:border-b-0 border-[#E5D3BC]" : ""
-            }`}
+            } ${i < 2 ? "border-b md:border-b-0 border-[#E5D3BC]" : ""}`}
           >
             <div className="font-serif text-[30px] font-semibold text-[#A8201A]">
               {s.value}
             </div>
 
-            <div className="text-[13.5px] text-[#6b5f58] mt-1">
-              {s.label}
-            </div>
+            <div className="text-[13.5px] text-[#6b5f58] mt-1">{s.label}</div>
           </div>
         ))}
       </div>
@@ -350,10 +352,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section
-        id="requests"
-        className="bg-[#F3E7D8] px-6 md:px-[6vw] py-20"
-      >
+      <section id="requests" className="bg-[#F3E7D8] px-6 md:px-[6vw] py-20">
         <div className="max-w-[52ch] mb-12">
           <h2 className="font-serif font-semibold text-[26px] md:text-[34px] tracking-tight mb-3">
             Urgent requests near you
@@ -408,8 +407,8 @@ export default function LandingPage() {
           </h2>
 
           <p className="text-[#6b5f58] text-[16px] leading-relaxed">
-            Safety for both sides of the connection is the whole product, not
-            an afterthought.
+            Safety for both sides of the connection is the whole product, not an
+            afterthought.
           </p>
         </div>
 

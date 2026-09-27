@@ -98,12 +98,20 @@ export default function RequesterDashboard() {
             </p>
           </div>
 
-          <Link
-            href="/requests"
-            className="flex items-center gap-1.5 bg-[#A8201A] hover:bg-[#7A1712] text-white font-semibold text-sm px-5 py-3 rounded-lg"
-          >
-            <Plus size={16} /> New request
-          </Link>
+          <div className="flex gap-3">
+            <Link
+              href="/donors"
+              className="flex items-center gap-1.5 border border-[#A8201A] text-[#A8201A] hover:bg-[#A8201A] hover:text-white font-semibold text-sm px-5 py-3 rounded-lg"
+            >
+              Find Donors
+            </Link>
+            <Link
+              href="/requests/new"
+              className="flex items-center gap-1.5 bg-[#A8201A] hover:bg-[#7A1712] text-white font-semibold text-sm px-5 py-3 rounded-lg"
+            >
+              <Plus size={16} /> New request
+            </Link>
+          </div>
         </div>
 
         <h2 className="font-serif text-xl font-semibold mb-4">Your requests</h2>
