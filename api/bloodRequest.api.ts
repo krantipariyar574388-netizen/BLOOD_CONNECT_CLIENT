@@ -96,3 +96,27 @@ export const getBloodRequestById = async (id: string) => {
     throw error?.response?.data ?? { message: error?.message ?? "Network error" };
   }
 };
+
+export const updateBloodRequestStatus = async (id: string, status: string) => {
+  try {
+    const response = await axios.patch(
+      `${BASE_URL}/bloodrequests/${id}/status`,
+      { status },
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error?.response?.data ?? { message: error?.message ?? "Network error" };
+  }
+};
+
+export const deleteBloodRequest = async (id: string) => {
+  try {
+    const response = await axios.delete(`${BASE_URL}/bloodrequests/${id}/`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error: any) {
+    throw error?.response?.data ?? { message: error?.message ?? "Network error" };
+  }
+};
